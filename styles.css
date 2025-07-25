@@ -1,0 +1,504 @@
+/* Reset y configuración base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: #374151;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+}
+
+/* Durante el splash screen, el body mantiene su fondo original */
+body.splash-active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Container principal responsivo */
+.app-container {
+  max-width: 480px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Animaciones del splash screen */
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: bounce 1.4s ease-in-out both infinite;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+
+  40% {
+    transform: scale(1);
+  }
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+/* Navegación principal */
+.nav-button {
+  color: #9ca3af;
+  transition: all 0.3s ease;
+}
+
+.nav-button.active {
+  color: #10b981;
+  background-color: #ecfdf5;
+}
+
+.nav-button:hover {
+  color: #10b981;
+  background-color: #f0fdf4;
+}
+
+/* Period selector */
+.period-btn {
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.period-btn.active {
+  color: #10b981;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Activity items */
+.activity-item {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.activity-item:hover {
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+  transform: translateY(-2px);
+}
+
+.activity-item.selected {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.activity-icon {
+  width: 48px;
+  height: 48px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.activity-item.selected .activity-icon {
+  background: #10b981;
+  color: white;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-name {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 4px;
+}
+
+.activity-value {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.activity-item.selected .checkmark {
+  border-color: #10b981;
+  background: #10b981;
+  color: white;
+}
+
+/* Cards y contenedores */
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Achievement items */
+.achievement-item {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.achievement-item.unlocked {
+  border: 2px solid #fbbf24;
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.25);
+}
+
+.achievement-item.locked {
+  opacity: 0.6;
+  filter: grayscale(50%);
+}
+
+.achievement-badge {
+  width: 60px;
+  height: 60px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.achievement-item.unlocked .achievement-badge {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+/* Gráfico simple */
+.chart-bar {
+  background: #e5e7eb;
+  border-radius: 4px;
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-bar.active {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.chart-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.chart-bar:hover::after {
+  left: 100%;
+}
+
+/* Category progress bars */
+.category-progress {
+  background: #f3f4f6;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.category-progress-fill {
+  height: 100%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-radius: 4px;
+  transition: width 1s ease;
+}
+
+/* Modal mejorado */
+#achievement-modal .bg-white {
+  animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7) translateY(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Toast mejorado */
+#toast-notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+/* Status indicators */
+.status-excellent {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.status-good {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+}
+
+.status-warning {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+}
+
+.status-danger {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+/* Efectos de hover mejoradas */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================================= */
+/* VISTA DE PREVISUALIZACIÓN PARA ORDENADORES (992px+) */
+/* ============================================================================= */
+@media (min-width: 992px) {
+  /* Estos estilos solo se aplican cuando la app principal está lista */
+  body.app-ready {
+    /* AJUSTE 4: Fondo creativo y sutil para la página */
+    background-color: #f0f4f8; /* Un color base suave y moderno */
+    background-image:
+      radial-gradient(circle at 1px 1px, #d1d5db 1px, transparent 0);
+    background-size: 25px 25px; /* Tamaño del patrón de puntos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  /* El .app-container se convierte en el marco del teléfono */
+  body.app-ready .app-container {
+    max-width: 390px; /* Ancho de iPhone 13 Pro */
+    min-width: 390px;
+    height: 844px; /* Alto de iPhone 13 Pro */
+    margin: 0;
+    border: 14px solid #1f2937; /* Borde oscuro para el chasis */
+    border-radius: 50px; /* Bordes redondeados del dispositivo */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Oculta el contenido que se desborde */
+    position: relative; /* Base para posicionar elementos internos */
+    display: flex;
+    flex-direction: column;
+    /* Se restaura el fondo original de la app para el interior del marco */
+    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+  }
+
+  /* AJUSTE 1: Muesca (notch) más pequeña para no cubrir el contenido */
+  body.app-ready .app-container::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px; /* Reducido de 180px */
+    height: 22px; /* Reducido de 28px */
+    background: #1f2937; /* Mismo color que el borde */
+    border-radius: 0 0 14px 14px; /* Radio ajustado */
+    z-index: 100;
+  }
+  
+  /* El contenido principal de la app ahora es un contenedor con scroll */
+  body.app-ready #main-app {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Scrollbar más sutil para la previsualización */
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af #f9fafb;
+  }
+  body.app-ready #main-app::-webkit-scrollbar {
+    width: 5px;
+  }
+  body.app-ready #main-app::-webkit-scrollbar-track {
+    background: #f9fafb;
+  }
+  body.app-ready #main-app::-webkit-scrollbar-thumb {
+    background-color: #9ca3af;
+    border-radius: 6px;
+    border: 3px solid #f9fafb;
+  }
+
+  /* --- Ajuste de Elementos 'position: fixed' --- */
+  /* Se convierten a 'position: absolute' para que queden dentro del marco */
+
+  body.app-ready #splash-screen,
+  body.app-ready #welcome-screen,
+  body.app-ready #achievement-modal {
+    position: absolute; /* Cambiado de fixed a absolute */
+    inset: 0; /* Ocupa todo el espacio del .app-container */
+    border-radius: 36px; /* Para que encaje dentro del marco redondeado */
+  }
+
+  body.app-ready #bottom-nav {
+    position: absolute; /* Cambiado de fixed a absolute */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0 0 36px 36px; /* Redondear esquinas inferiores */
+    padding-bottom: 10px; /* Espacio extra para simular el gesto del home */
+    background: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
+  }
+
+  /* AJUSTE 2: Estilos para que el menú inferior se vea correctamente */
+  body.app-ready #bottom-nav .flex {
+    flex-direction: row; /* Forzar la dirección de los botones a fila */
+    justify-content: space-around; /* Distribuirlos equitativamente */
+  }
+
+  body.app-ready #bottom-nav .nav-button {
+    flex-direction: column; /* Mantener icono y texto en columna dentro del botón */
+    gap: 2px;
+  }
+
+  body.app-ready #bottom-nav .nav-button svg {
+    margin-bottom: 0; /* Quitar margen inferior del SVG que era para desktop */
+  }
+  
+  body.app-ready #bottom-nav .nav-button span {
+    font-size: 11px; /* Un poco más pequeño para que quepa bien */
+  }
+  /* Fin del ajuste 2 */
+
+  body.app-ready #share-btn {
+    position: absolute; /* Cambiado de fixed a absolute */
+    bottom: 90px;
+    right: 16px;
+  }
+
+  body.app-ready #toast-notification {
+    position: absolute; /* Cambiado de fixed a absolute */
+    bottom: 100px; /* Ajustar posición para que no choque con la nav */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* El header se mantiene sticky dentro de #main-app que ahora tiene scroll */
+  body.app-ready header {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+
+  /* --- Ajuste de Márgenes y Anchos Internos --- */
+  /* Se anulan los anchos y paddings fijos para que se adapten al marco */
+  body.app-ready .app-container .max-w-md {
+    max-width: 100%;
+  }
+
+  body.app-ready .app-container .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Ajuste específico para el widget de calidad de aire si existe */
+  body.app-ready .app-container #air-quality-widget.mx-4 {
+      margin-left: 1rem;
+      margin-right: 1rem;
+  }
+}

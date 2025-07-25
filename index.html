@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rastreador de Huella de Carbono</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "eco-green": "#10b981",
+              "eco-light": "#ecfdf5",
+              "eco-dark": "#065f46",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="font-['Poppins']">
+    <!-- Splash Screen -->
+    <div
+      id="splash-screen"
+      class="fixed inset-0 bg-gradient-to-br from-eco-green to-green-600 flex items-center justify-center z-50"
+    >
+      <div class="text-center text-white">
+        <div class="animate-bounce mb-6">
+          <div
+            class="w-24 h-24 mx-auto bg-white/20 rounded-full flex items-center justify-center"
+          >
+            <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <h1 class="text-2xl font-bold mb-2">Rastreador de Huella de Carbono</h1>
+        <div class="loading-dots">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Welcome Screen -->
+    <div
+      id="welcome-screen"
+      class="fixed inset-0 bg-gradient-to-br from-eco-light to-white flex items-center justify-center z-40 hidden"
+    >
+      <div class="max-w-md mx-4 text-center">
+        <div class="mb-8">
+          <div
+            class="w-32 h-32 mx-auto bg-eco-green/10 rounded-full flex items-center justify-center mb-6"
+          >
+            <svg
+              class="w-16 h-16 text-eco-green"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 class="text-3xl font-bold text-gray-800 mb-4">
+            Rastreador de Huella de Carbono
+          </h1>
+          <p class="text-gray-600 text-lg leading-relaxed">
+            Conoce tu impacto diario, toma decisiones más sostenibles y
+            convierte cada acción en una oportunidad para cuidar el planeta.
+          </p>
+        </div>
+        <button
+          id="start-button"
+          class="w-full bg-eco-green text-white font-semibold py-4 px-8 rounded-2xl hover:bg-eco-dark transform hover:scale-105 transition-all duration-200 shadow-lg"
+        >
+          ¡Comenzar mi Viaje Verde!
+        </button>
+      </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div class="app-container">
+      <div id="main-app" class="min-h-screen pb-20 hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-lg sticky top-0 z-30">
+          <div class="max-w-md mx-auto px-4 py-4">
+            <div class="flex items-center justify-between mb-2">
+              <h1 class="text-xl font-bold text-gray-800">🌱 EcoTracker</h1>
+              <div class="flex items-center gap-3">
+                <div
+                  id="streak-badge"
+                  class="bg-eco-green text-white px-3 py-1 rounded-full text-sm font-medium"
+                >
+                  🔥 0 días
+                </div>
+                <button
+                  id="achievements-btn"
+                  class="bg-yellow-100 text-yellow-800 p-2 rounded-full hover:bg-yellow-200 transition-colors"
+                >
+                  🏆
+                </button>
+              </div>
+            </div>
+            <div class="text-center py-3 border-t border-gray-100">
+              <p id="current-date" class="text-sm text-gray-500 font-medium">
+                Cargando fecha...
+              </p>
+            </div>
+          </div>
+        </header>
+
+        <!-- Bottom Navigation (Mobile) / Sidebar (Desktop) -->
+        <nav
+          id="bottom-nav"
+          class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 hidden lg:static lg:border-t-0"
+        >
+          <div
+            class="max-w-md mx-auto flex justify-around lg:justify-start lg:flex-col lg:max-w-full"
+          >
+            <button
+              class="nav-button active flex flex-col items-center py-2 px-4 rounded-xl transition-all lg:flex-row lg:w-full lg:justify-start"
+              data-view="activities"
+            >
+              <svg
+                class="w-6 h-6 mb-1 lg:mb-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="text-xs lg:text-sm">Actividades</span>
+            </button>
+            <button
+              class="nav-button flex flex-col items-center py-2 px-4 rounded-xl transition-all lg:flex-row lg:w-full lg:justify-start"
+              data-view="stats"
+            >
+              <svg
+                class="w-6 h-6 mb-1 lg:mb-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"
+                />
+              </svg>
+              <span class="text-xs lg:text-sm">Estadísticas</span>
+            </button>
+            <button
+              class="nav-button flex flex-col items-center py-2 px-4 rounded-xl transition-all lg:flex-row lg:w-full lg:justify-start"
+              data-view="achievements"
+            >
+              <svg
+                class="w-6 h-6 mb-1 lg:mb-0"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <span class="text-xs lg:text-sm">Logros</span>
+            </button>
+          </div>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content-area">
+          <!-- Weather Container -->
+          <div class="weather-container">
+            <div
+              id="weather-tip"
+              class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-xl"
+            >
+              <p class="text-blue-800 text-sm">
+                🌤️ Cargando sugerencia del clima...
+              </p>
+            </div>
+          </div>
+
+          <!-- Daily Summary -->
+          <div class="desktop-summary max-w-md mx-auto px-4 py-6">
+            <div class="bg-white rounded-3xl shadow-xl p-6 mb-6">
+              <div class="text-center">
+                <h2 class="text-lg font-semibold text-gray-700 mb-2">
+                  Tu Huella de Hoy
+                </h2>
+                <div
+                  id="daily-total"
+                  class="text-4xl font-bold text-eco-green mb-2"
+                >
+                  0.0 kg
+                </div>
+                <div
+                  id="daily-status"
+                  class="text-sm px-4 py-2 rounded-full bg-eco-light text-eco-dark"
+                >
+                  ¡Excelente inicio!
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Content Views -->
+          <div
+            class="desktop-content max-w-md mx-auto px-4 lg:max-w-full lg:px-0"
+          >
+            <!-- Activities View -->
+            <div id="activities-view" class="view-content">
+              <h3 class="text-xl font-bold text-gray-800 mb-6">
+                Registra tus Actividades
+              </h3>
+              <div id="activities-container" class="space-y-4">
+                <!-- Activities will be dynamically inserted here -->
+              </div>
+              <div class="mt-8 p-4 bg-eco-light rounded-2xl">
+                <h4 class="font-semibold text-eco-dark mb-2">
+                  💡 Consejo del Día
+                </h4>
+                <p id="daily-tip" class="text-sm text-gray-700">
+                  Cada pequeña acción cuenta para un planeta más verde.
+                </p>
+              </div>
+            </div>
+
+            <!-- Statistics View -->
+            <div id="stats-view" class="view-content hidden">
+              <h3 class="text-xl font-bold text-gray-800 mb-6">
+                📊 Mis Estadísticas
+              </h3>
+
+              <!-- Time Period Selector -->
+              <div class="flex bg-gray-100 rounded-2xl p-1 mb-6">
+                <button
+                  class="period-btn active flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-all"
+                  data-period="week"
+                >
+                  Semana
+                </button>
+                <button
+                  class="period-btn flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-all"
+                  data-period="month"
+                >
+                  Mes
+                </button>
+                <button
+                  class="period-btn flex-1 py-2 px-4 rounded-xl text-sm font-medium transition-all"
+                  data-period="year"
+                >
+                  Año
+                </button>
+              </div>
+
+              <!-- Stats Cards - ETIQUETAS AHORA DINÁMICAS -->
+              <div
+                class="desktop-stats-grid grid grid-cols-2 gap-4 mb-6 lg:grid-cols-4"
+              >
+                <div class="bg-white p-4 rounded-2xl shadow-md hover-lift">
+                  <div
+                    class="text-2xl font-bold text-eco-green"
+                    id="avg-footprint"
+                  >
+                    0.0
+                  </div>
+                  <div class="text-sm text-gray-600" id="avg-footprint-label">
+                    Promedio kg/día
+                  </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-md hover-lift">
+                  <div class="text-2xl font-bold text-blue-600" id="total-days">
+                    0
+                  </div>
+                  <div class="text-sm text-gray-600" id="total-days-label">
+                    Días registrados
+                  </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-md hover-lift">
+                  <div class="text-2xl font-bold text-green-600" id="best-day">
+                    0.0
+                  </div>
+                  <div class="text-sm text-gray-600" id="best-day-label">
+                    Mejor día
+                  </div>
+                </div>
+                <div class="bg-white p-4 rounded-2xl shadow-md hover-lift">
+                  <div
+                    class="text-2xl font-bold text-orange-600"
+                    id="worst-day"
+                  >
+                    0.0
+                  </div>
+                  <div class="text-sm text-gray-600" id="worst-day-label">
+                    Día a mejorar
+                  </div>
+                </div>
+              </div>
+
+              <!-- Category Breakdown -->
+              <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+                <h4 class="font-semibold text-gray-800 mb-4">Por Categorías</h4>
+                <div id="category-stats" class="space-y-3">
+                  <!-- Category stats will be inserted here -->
+                </div>
+              </div>
+
+              <!-- Chart Container - TÍTULO DINÁMICO -->
+              <div class="bg-white rounded-2xl shadow-md p-6">
+                <h4 class="font-semibold text-gray-800 mb-4" id="chart-title">
+                  Tendencia Semanal
+                </h4>
+                <div id="weekly-chart" class="h-32">
+                  <!-- Simple chart will be rendered here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievements View -->
+            <div id="achievements-view" class="view-content hidden">
+              <h3 class="text-xl font-bold text-gray-800 mb-6">
+                🏆 Mis Logros
+              </h3>
+              <div id="achievements-container" class="space-y-4">
+                <!-- Achievements will be dynamically inserted here -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Share Button -->
+        <div class="fixed bottom-24 right-4 lg:bottom-30 lg:right-30">
+          <button
+            id="share-btn"
+            class="bg-eco-green text-white p-4 rounded-full shadow-lg hover:bg-eco-dark transform hover:scale-110 transition-all"
+          >
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Achievement Modal -->
+    <div
+      id="achievement-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 hidden"
+    >
+      <div
+        class="bg-white p-8 rounded-3xl shadow-2xl text-center max-w-sm mx-4 transform scale-95"
+      >
+        <div id="modal-badge" class="text-6xl mb-4">🏆</div>
+        <h3 id="modal-title" class="text-2xl font-bold text-gray-800 mb-2">
+          ¡Logro Desbloqueado!
+        </h3>
+        <p id="modal-text" class="text-gray-600 mb-6">
+          Has conseguido un nuevo logro.
+        </p>
+        <button
+          id="modal-close-button"
+          class="bg-eco-green text-white font-bold py-3 px-8 rounded-2xl hover:bg-eco-dark transition-colors transform hover:scale-105"
+        >
+          ¡Genial!
+        </button>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast-notification"
+      class="fixed bottom-32 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-3 px-6 rounded-2xl text-sm shadow-lg opacity-0 transition-all duration-300 pointer-events-none z-40"
+    >
+      Mensaje
+    </div>
+
+    <script src="script.js"></script>
+    <script src="stats.js"></script>
+    <script src="achievements.js"></script>
+  </body>
+</html>
